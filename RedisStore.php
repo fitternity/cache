@@ -194,4 +194,18 @@ class RedisStore extends TaggableStore implements Store
     {
         $this->prefix = ! empty($prefix) ? $prefix.':' : '';
     }
+
+    public function foreverv2($key, $value)
+    {
+        $value = is_numeric($value) ? $value : json_encode($value);
+
+        $this->connection()->set($this->prefix.$key, $value);
+    }
+
+    public function getv2($key)
+    {
+        if (! is_null($value = $this->connection()->get($this->prefix.$key))) {
+            return is_numeric($value) ? $value : json_encode($value);
+        }
+    }
 }
